@@ -81,6 +81,12 @@ NSString *const MTSymbolDegree = @"\u00B0"; // \circ
     NSString *chStr = [NSString stringWithCharacters:&ch length:1];
     if (ch > 0x0410 && ch < 0x044F){
         // show basic cyrillic alphabet. Latin Modern Math font is not good for cyrillic symbols
+        // https://github.com/kostub/iosMath/commit/ad2c515cab80a55da5f65a7811dff97984366c26
+        return [MTMathAtom atomWithType:kMTMathAtomOrdinary value:chStr];
+    } else if (ch >= 0x4E00 && ch <= 0x9FFF) {
+        // CJK support. But xits-math-cn font only has Chinese characters support.
+        // https://github.com/kostub/iosMath/issues/27
+        // 0x4E00～0x9FFF基本中文字符Unicode编码范围
         return [MTMathAtom atomWithType:kMTMathAtomOrdinary value:chStr];
     } else if (ch < 0x21 || ch > 0x7E) {
         // skip non ascii characters and spaces
